@@ -1,0 +1,15 @@
+com\xauv\pojo\University.class
+com\xauv\pojo\vo\UniversityDirectionVO.class
+com\xauv\pojo\datastructure\FirstSubjectDetail.class
+com\xauv\pojo\UniversityDetail.class
+com\xauv\pojo\UniversityMappedDirection.class
+com\xauv\pojo\vo\LandingExperienceShareVO.class
+com\xauv\pojo\datastructure\DetailForRecruitment.class
+com\xauv\pojo\UniversityDirection.class
+com\xauv\pojo\UniversityAlias.class
+com\xauv\pojo\datastructure\SecondSubjectDetail.class
+com\xauv\pojo\vo\UniversityDirectionVOContent.class
+com\xauv\pojo\vo\BottomTipVO.class
+com\xauv\pojo\LandingExperience.class
+com\xauv\pojo\datastructure\ThirdSubjectWithRecruitmentNum.class
+com\xauv\pojo\BottomTip.class

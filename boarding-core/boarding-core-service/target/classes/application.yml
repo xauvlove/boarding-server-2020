@@ -1,0 +1,37 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: core-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/boarding
+    username: root
+    password: Boarding521410...
+    driver-class-name: com.mysql.jdbc.Driver
+  redis:
+    port: 6379
+    host: 118.25.188.245
+    database: 0
+    password: Boarding521410...
+wx:
+  app:
+    appId: wxc31a46be1015774d
+    secret: 9b71e87f6aaa2a86e033032a06c0fbef
+    baseUrl: https://api.weixin.qq.com/sns/jscode2session?appid=
+
+
+
+server:
+  port: 8077
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+--- # 3个 - 表示第开启新的配置环境
+spring:
+  profiles: prod
+
+server:
+  port: 10086
