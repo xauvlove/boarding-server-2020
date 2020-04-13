@@ -1,0 +1,9 @@
+[master 9597ff4] 拦截爬虫行为--
+ 11 files changed, 97 insertions(+), 26 deletions(-)
+ create mode 100644 boarding-common/src/main/java/com/xauv/exception/CrawlerBehaviorException.java
+ create mode 100644 boarding-core/boarding-core-service/src/main/java/com/xauv/service/illegal/CrawlerCheckService.java
+ rewrite boarding-core/boarding-core-service/target/classes/com/xauv/service/daoservice/LandingExperienceDaoService.class (87%)
+ rewrite boarding-core/boarding-core-service/target/classes/com/xauv/service/daoservice/UniversityDirectionDaoService.class (83%)
+ create mode 100644 boarding-core/boarding-core-service/target/classes/com/xauv/service/illegal/CrawlerCheckService.class
+ rewrite boarding-core/boarding-core-service/target/classes/com/xauv/web/LandingExperienceController.class (87%)
+ rewrite boarding-core/boarding-core-service/target/classes/com/xauv/web/UniversityDirectionController.class (80%)

@@ -1,4 +1,11 @@
 package com.xauv.exception;
 
-public class CrawlerBehaivorException {
+public class CrawlerBehaviorException extends Exception{
+    public CrawlerBehaviorException() {
+        super();
+    }
+
+    public CrawlerBehaviorException(String msg) {
+        super(msg);
+    }
 }

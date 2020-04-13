@@ -14,12 +14,15 @@ com\xauv\web\WXController.class
 com\xauv\mapper\LandingExperienceMapper.class
 com\xauv\service\DaoCompleteService.class
 com\xauv\service\checkservice\ArgsConditions.class
+com\xauv\service\WXLoginService.class
 com\xauv\web\LandingExperienceController.class
 com\xauv\service\checkservice\CheckService.class
 com\xauv\mapper\UniversityDetailMapper.class
 com\xauv\config\AppProdConfig.class
+com\xauv\config\properties\AppConfigurationProperties.class
 com\xauv\service\daoservice\UniversityDetailDaoService.class
 com\xauv\config\AppDevConfig.class
+com\xauv\service\illegal\CrawlerCheckService.class
 com\xauv\mapper\BottomTipMapper.class
 com\xauv\service\TipService.class
 com\xauv\service\dispatcherservice\DispatcherService.class

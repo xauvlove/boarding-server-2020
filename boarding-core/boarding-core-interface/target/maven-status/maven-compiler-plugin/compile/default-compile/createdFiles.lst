@@ -1,5 +1,6 @@
 com\xauv\pojo\University.class
 com\xauv\pojo\vo\UniversityDirectionVO.class
+com\xauv\pojo\wx\WXLoginCallback.class
 com\xauv\pojo\datastructure\FirstSubjectDetail.class
 com\xauv\pojo\UniversityDetail.class
 com\xauv\pojo\UniversityMappedDirection.class

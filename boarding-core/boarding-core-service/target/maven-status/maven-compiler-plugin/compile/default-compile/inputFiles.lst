@@ -1,3 +1,4 @@
+D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\config\properties\AppConfigurationProperties.java
 D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\service\daoservice\LandingExperienceDaoService.java
 D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\web\BottomTipController.java
 D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\tempck\TemClassForWXLogin.java
@@ -20,8 +21,10 @@ D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\mapp
 D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\mapper\LandingExperienceMapper.java
 D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\service\dispatcherservice\LandingExperienceDispatcherService.java
 D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\mapper\UniversityDirectionMapper.java
+D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\service\illegal\CrawlerCheckService.java
 D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\mapper\UniversityDetailMapper.java
 D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\service\checkservice\LandingExperienceVOCheckService.java
+D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\service\WXLoginService.java
 D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\service\daoservice\BottomTipService.java
 D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\CoreServiceApplication.java
 D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\service\checkservice\CheckService.java

@@ -1,4 +1,5 @@
 com\xauv\utils\DESUtil.class
+com\xauv\exception\CrawlerBehaviorException.class
 com\xauv\constants\BoardingConstant.class
 com\xauv\BoardingException.class
 com\xauv\format\InternalStandardMessageFormat.class
