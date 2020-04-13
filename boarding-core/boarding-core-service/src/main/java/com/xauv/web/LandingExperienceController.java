@@ -1,5 +1,6 @@
 package com.xauv.web;
 
+import com.xauv.exception.CrawlerBehaviorException;
 import com.xauv.format.InternalStandardMessageFormat;
 import com.xauv.pojo.vo.LandingExperienceShareVO;
 import com.xauv.resultful.PageResult;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 
 @RestController
@@ -37,12 +37,17 @@ public class LandingExperienceController {
 
     @GetMapping("/landing/experience")
     public ResponseEntity<PageResult<LandingExperienceShareVO>> getLandingExperiencesByPage(
-            @RequestParam("page") Integer page, @RequestParam("rows") Integer rows, @RequestParam("loginSession") String loginSession) {
+            @RequestParam("page") Integer page, @RequestParam("rows") Integer rows,
+            @RequestParam("loginSession") String loginSession) {
         try {
             return ResponseEntity.ok(landingExperienceDaoService.queryLandingExperienceByPage(page,rows, loginSession));
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.ok(landingExperienceDaoService.queryLandingExperienceByPageWithDirectError());
+        } catch (CrawlerBehaviorException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).
+                    body(landingExperienceDaoService.queryLandingExperienceByPageWithDirectError());
         }
     }
 }

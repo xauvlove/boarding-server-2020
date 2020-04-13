@@ -2,10 +2,10 @@ package com.xauv.service.daoservice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.xauv.exception.CrawlerBehaviorException;
 import com.xauv.format.InternalStandardMessageEnum;
 import com.xauv.format.InternalStandardMessageFormat;
 import com.xauv.mapper.LandingExperienceMapper;
@@ -20,7 +20,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
-
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
@@ -37,15 +37,15 @@ public class LandingExperienceDaoService {
     private LandingExperienceMapper landingExperienceMapper;
     @Autowired
     private UniversityDaoService universityDaoService;
-    @Autowired
-    private RedisTemplate redisTemplate;
+    @Resource(name = "redisTemplate")
+    private RedisTemplate<String, WXLoginCallback> redisTemplate;
 
     public PageResult<LandingExperienceShareVO> queryLandingExperienceByPageWithDirectError() {
         return new PageResult<>(0L,0, Collections.emptyList());
     }
 
     public PageResult<LandingExperienceShareVO> queryLandingExperienceByPage(
-            int page, int rows, String loginSession) throws IOException {
+            int page, int rows, String loginSession) throws IOException, CrawlerBehaviorException {
 
         PageResult<LandingExperienceShareVO> result = null;
 
@@ -53,11 +53,12 @@ public class LandingExperienceDaoService {
         String decryptString = DESUtil.getDecryptString(loginSession);
         WXLoginCallback wxLoginCallback = objectMapper.readValue(decryptString, WXLoginCallback.class);
         //判断爬虫行为
-        WXLoginCallback redisLoginCallback = (WXLoginCallback)redisTemplate.opsForValue().get(wxLoginCallback.getOpenid());
+        WXLoginCallback redisLoginCallback = redisTemplate.opsForValue().get(
+                WXLoginCallback.ACCESS_FREQUENCY_PREFIX + wxLoginCallback.getOpenid());
         if(redisLoginCallback != null) {
-            if(redisLoginCallback.getAccessFrequency() > 50) {
-                result = new PageResult<>(0L,0, Collections.emptyList());
-                return result;
+            if(redisLoginCallback.getAccessFrequency() >= WXLoginCallback.MAX_ACCESS_FREQUENCY_LANDING_EXP
+                    || redisLoginCallback.getAccFreqWithLandingExp() >= WXLoginCallback.MAX_ACCESS_FREQUENCY_LANDING_EXP) {
+                throw new CrawlerBehaviorException();
             }
         } else {
             redisLoginCallback = wxLoginCallback;
@@ -98,13 +99,11 @@ public class LandingExperienceDaoService {
     //更新 redis
     @Async
     public void saveQueryFrequencyActiveToRedis(WXLoginCallback wxLoginCallback, Integer queryCount) {
-        Integer accessFrequency = wxLoginCallback.getAccessFrequency();
-        if(accessFrequency == null) {
-            wxLoginCallback.setAccessFrequency(queryCount);
-        } else {
-            wxLoginCallback.setAccessFrequency(wxLoginCallback.getAccessFrequency() + queryCount);
-        }
-        redisTemplate.opsForValue().set(wxLoginCallback.getOpenid(), wxLoginCallback, 7, TimeUnit.DAYS);
+        wxLoginCallback.setAccessFrequency(wxLoginCallback.getAccessFrequency() + queryCount);
+        wxLoginCallback.setAccFreqWithLandingExp(wxLoginCallback.getAccFreqWithLandingExp() + queryCount);
+        redisTemplate.opsForValue().set(
+                WXLoginCallback.ACCESS_FREQUENCY_PREFIX
+                        + wxLoginCallback.getOpenid(), wxLoginCallback, 7, TimeUnit.DAYS);
     }
 
     public InternalStandardMessageFormat saveLandingExperience(LandingExperienceShareVO landingExperienceShareVO) {

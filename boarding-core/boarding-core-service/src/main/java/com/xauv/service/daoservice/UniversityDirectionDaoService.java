@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.xauv.exception.CrawlerBehaviorException;
 import com.xauv.mapper.UniversityDirectionMapper;
 import com.xauv.pojo.University;
 import com.xauv.pojo.UniversityDirection;
@@ -13,19 +14,25 @@ import com.xauv.pojo.datastructure.SecondSubjectDetail;
 import com.xauv.pojo.datastructure.ThirdSubjectWithRecruitmentNum;
 import com.xauv.pojo.vo.UniversityDirectionVO;
 import com.xauv.pojo.vo.UniversityDirectionVOContent;
+import com.xauv.pojo.wx.WXLoginCallback;
 import com.xauv.utils.DESUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UniversityDirectionDaoService {
@@ -38,6 +45,12 @@ public class UniversityDirectionDaoService {
     private UniversityDirectionMapper universityDirectionMapper;
     @Autowired
     private ObjectMapper objectMapper;
+    @Resource(name = "redisTemplate")
+    private RedisTemplate<String, WXLoginCallback> redisTemplate;
+
+    public List<UniversityDirectionVO> queryEmptyUniversity(){
+        return Collections.emptyList();
+    }
 
     /**
      * 根据条件查询
@@ -45,10 +58,24 @@ public class UniversityDirectionDaoService {
      * @param
      * @return
      */
-    public List<UniversityDirectionVO> getUniversityByConditions(UniversityDirection universityDirection) throws JsonProcessingException {
-        //UniversityDirection universityDirection = tToKUtilVO.transferTToK(universityDirectionVO, UniversityDirection.class);
-        //List<UniversityDirection> universityDirectionList = universityDirectionMapper.select(universityDirection);
-        //return tToKUtil.transferTToK(universityDirectionList, UniversityDirectionVO.class);
+    public List<UniversityDirectionVO> getUniversityByConditions(
+            UniversityDirection universityDirection, String loginSession) throws IOException, CrawlerBehaviorException {
+
+        //鉴定爬虫行为
+        String decryptString = DESUtil.getDecryptString(loginSession);
+        WXLoginCallback wxLoginCallback = objectMapper.readValue(decryptString, WXLoginCallback.class);
+        //判断爬虫行为
+        WXLoginCallback redisLoginCallback = redisTemplate.opsForValue().get(
+                WXLoginCallback.ACCESS_FREQUENCY_PREFIX + wxLoginCallback.getOpenid());
+        if(redisLoginCallback != null) {
+            if(redisLoginCallback.getAccessFrequency() >= WXLoginCallback.MAX_ACCESS_FREQUENCY_LANDING_EXP
+                    || redisLoginCallback.getAccFreqWithUniversity() >= WXLoginCallback.MAX_ACCESS_FREQUENCY_UNIVERSITY) {
+                throw new CrawlerBehaviorException();
+            }
+        } else {
+            redisLoginCallback = wxLoginCallback;
+        }
+
         if(StringUtils.isBlank(universityDirection.getBroadDirectionName())) {
             universityDirection.setBroadDirectionName(null);
         }
@@ -61,8 +88,18 @@ public class UniversityDirectionDaoService {
         }
         universityDirection.setMasterType(masterType);
         List<UniversityDirection> select = universityDirectionMapper.select(universityDirection);
-
+        saveQueryFrequencyActiveToRedis(redisLoginCallback, select.size());
         return transferUniversityDirectionToVO(select);
+    }
+
+    //更新 redis
+    @Async
+    public void saveQueryFrequencyActiveToRedis(WXLoginCallback wxLoginCallback, Integer queryCount) {
+        wxLoginCallback.setAccessFrequency(wxLoginCallback.getAccessFrequency() + queryCount);
+        wxLoginCallback.setAccFreqWithUniversity(wxLoginCallback.getAccFreqWithUniversity() + queryCount);
+        redisTemplate.opsForValue().set(
+                WXLoginCallback.ACCESS_FREQUENCY_PREFIX
+                        + wxLoginCallback.getOpenid(), wxLoginCallback, 7, TimeUnit.DAYS);
     }
 
     private List<UniversityDirectionVO> transferUniversityDirectionToVO(List<UniversityDirection> universityDirectionList) {
