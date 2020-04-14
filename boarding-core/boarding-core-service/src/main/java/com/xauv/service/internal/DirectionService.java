@@ -1,18 +1,12 @@
 package com.xauv.service.internal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
 import com.xauv.pojo.datastructure.FirstSubjectDetail;
 import com.xauv.pojo.datastructure.SecondSubjectDetail;
-import javafx.util.Pair;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,9 +18,13 @@ public class DirectionService {
 
     @PostConstruct
     public void fullInDirection() throws IOException {
-        FileReader fr = new FileReader(DirectionService.class.getResource(
-                "/private/data").getPath()+"/subjectDetail.txt");
-        BufferedReader br = new BufferedReader(fr);
+
+        InputStream stream = getClass().getClassLoader().getResourceAsStream("private/data/subjectDetail.txt");
+
+        /*FileReader fr = new FileReader(
+                Thread.currentThread().getContextClassLoader().getResource("/").getPath()
+                        + "/private/data/subjectDetail.txt");*/
+        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 
         ObjectMapper objectMapper = new ObjectMapper();
 

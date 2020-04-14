@@ -59,7 +59,7 @@ public class UniversityDirectionController {
             return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(universityDirectionDaoService.queryEmptyUniversity());
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.unprocessableEntity().build();
         }
     }
 }

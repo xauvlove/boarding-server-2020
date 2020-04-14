@@ -1,5 +1,6 @@
 package com.xauv.web;
 
+import com.xauv.exception.AESEncodeException;
 import com.xauv.service.WXLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -23,7 +24,7 @@ public class WXController {
     }
 
     @PostMapping("/login")
-    public Map<String, Object> wxLogin(@RequestParam("code") String code) {
+    public Map<String, Object> wxLogin(@RequestParam("code") String code) throws AESEncodeException {
         return wxLoginService.Login(code);
     }
 }

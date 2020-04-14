@@ -1,9 +1,9 @@
 package com.xauv.service.daoservice;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.xauv.exception.AESEncodeException;
 import com.xauv.exception.CrawlerBehaviorException;
 import com.xauv.mapper.UniversityDirectionMapper;
 import com.xauv.pojo.University;
@@ -15,7 +15,8 @@ import com.xauv.pojo.datastructure.ThirdSubjectWithRecruitmentNum;
 import com.xauv.pojo.vo.UniversityDirectionVO;
 import com.xauv.pojo.vo.UniversityDirectionVOContent;
 import com.xauv.pojo.wx.WXLoginCallback;
-import com.xauv.utils.DESUtil;
+import com.xauv.utils.AESUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -23,7 +24,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
-
 import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@Slf4j
 public class UniversityDirectionDaoService {
 
     private static final String basepath = "D:\\apps\\java-develop\\oneonone\\common\\subjectDetail\\fornum\\";
@@ -60,14 +61,15 @@ public class UniversityDirectionDaoService {
      */
     public List<UniversityDirectionVO> getUniversityByConditions(
             UniversityDirection universityDirection, String loginSession)
-            throws IOException, CrawlerBehaviorException, IllegalAccessException {
+            throws IOException, CrawlerBehaviorException, IllegalAccessException, AESEncodeException {
 
         if(StringUtils.isBlank(universityDirection.getUniversityName())) {
             throw new IllegalAccessException();
         }
 
         //鉴定爬虫行为
-        String decryptString = DESUtil.getDecryptString(loginSession);
+        //String decryptString = DESUtil.getDecryptString(loginSession);
+        /*String decryptString = AESUtil.decryptEcbMode(loginSession);
         WXLoginCallback wxLoginCallback = objectMapper.readValue(decryptString, WXLoginCallback.class);
         //判断爬虫行为
         WXLoginCallback redisLoginCallback = redisTemplate.opsForValue().get(
@@ -79,7 +81,7 @@ public class UniversityDirectionDaoService {
             }
         } else {
             redisLoginCallback = wxLoginCallback;
-        }
+        }*/
 
         if(StringUtils.isBlank(universityDirection.getBroadDirectionName())) {
             universityDirection.setBroadDirectionName(null);
@@ -93,7 +95,7 @@ public class UniversityDirectionDaoService {
         }
         universityDirection.setMasterType(masterType);
         List<UniversityDirection> select = universityDirectionMapper.select(universityDirection);
-        saveQueryFrequencyActiveToRedis(redisLoginCallback, select.size());
+        //saveQueryFrequencyActiveToRedis(redisLoginCallback, select.size());
         return transferUniversityDirectionToVO(select);
     }
 
@@ -107,7 +109,7 @@ public class UniversityDirectionDaoService {
                         + wxLoginCallback.getOpenid(), wxLoginCallback, 7, TimeUnit.DAYS);
     }
 
-    private List<UniversityDirectionVO> transferUniversityDirectionToVO(List<UniversityDirection> universityDirectionList) {
+    private List<UniversityDirectionVO> transferUniversityDirectionToVO(List<UniversityDirection> universityDirectionList) throws AESEncodeException {
         if(universityDirectionList.size() <= 0) {
             return Collections.emptyList();
         }
@@ -123,8 +125,8 @@ public class UniversityDirectionDaoService {
                     "全日制专业硕士", "");
             */
             voContent.setMasterType(ori.getMasterType());
-            voContent.setObscureId(DESUtil.getEncryptString(String.valueOf(ori.getId())));
-            voContent.setObscureUniversityId(DESUtil.getEncryptString(String.valueOf(ori.getUniversityId())));
+            //voContent.setObscureId(AESUtil.decryptEcbMode(String.valueOf(ori.getId())));
+            //voContent.setObscureUniversityId(AESUtil.encryptEcbMode(String.valueOf(ori.getUniversityId())));
             voContent.setUniversityName(ori.getUniversityName());
             voContent.setBroadDirectionName(ori.getBroadDirectionName());
             voContent.setBroadDirectionCode(ori.getBroadDirectionCode());

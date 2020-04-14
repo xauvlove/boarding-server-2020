@@ -1,7 +1,8 @@
 package com.xauv.service;
 
 import com.xauv.config.properties.AppConfigurationProperties;
-import com.xauv.utils.DESUtil;
+import com.xauv.exception.AESEncodeException;
+import com.xauv.utils.AESUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class WXLoginService {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    public Map<String, Object> Login(String code) {
+    public Map<String, Object> Login(String code) throws AESEncodeException {
         Map<String, Object> result = new HashMap<>();
 
         String url = appProperties.getBaseUrl() + appProperties.getAppId() + "&secret="
@@ -46,7 +47,7 @@ public class WXLoginService {
         result.put("status", 200);
         //存储到小程序客户端可能有点长 这里可能存在问题
         //如果有这个问题，那么就要更换加密算法
-        result.put("ticket", DESUtil.getEncryptString(json));
+        result.put("ticket", AESUtil.encryptEcbMode(json));
         return result;
     }
 }

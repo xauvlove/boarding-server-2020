@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.xauv.exception.AESEncodeException;
 import com.xauv.exception.CrawlerBehaviorException;
 import com.xauv.format.InternalStandardMessageEnum;
 import com.xauv.format.InternalStandardMessageFormat;
@@ -13,7 +14,6 @@ import com.xauv.pojo.LandingExperience;
 import com.xauv.pojo.vo.LandingExperienceShareVO;
 import com.xauv.pojo.wx.WXLoginCallback;
 import com.xauv.resultful.PageResult;
-import com.xauv.utils.DESUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -45,12 +45,12 @@ public class LandingExperienceDaoService {
     }
 
     public PageResult<LandingExperienceShareVO> queryLandingExperienceByPage(
-            int page, int rows, String loginSession) throws IOException, CrawlerBehaviorException {
+            int page, int rows, String loginSession) throws IOException, CrawlerBehaviorException, AESEncodeException {
 
         PageResult<LandingExperienceShareVO> result = null;
 
         //鉴定爬虫行为
-        String decryptString = DESUtil.getDecryptString(loginSession);
+       /* String decryptString = AESUtil.decryptEcbMode(loginSession);
         WXLoginCallback wxLoginCallback = objectMapper.readValue(decryptString, WXLoginCallback.class);
         //判断爬虫行为
         WXLoginCallback redisLoginCallback = redisTemplate.opsForValue().get(
@@ -62,7 +62,7 @@ public class LandingExperienceDaoService {
             }
         } else {
             redisLoginCallback = wxLoginCallback;
-        }
+        }*/
         //非爬虫行为
         if(rows > DEFAULT_MAX_ROWS) {
             rows = DEFAULT_MAX_ROWS;
@@ -92,7 +92,7 @@ public class LandingExperienceDaoService {
             e.printStackTrace();
         }
         result = new PageResult<>(landingExpsPageInfo.getTotal(), landingExpsPageInfo.getPages(), voList);
-        saveQueryFrequencyActiveToRedis(redisLoginCallback, voList.size());
+        //saveQueryFrequencyActiveToRedis(redisLoginCallback, voList.size());
         return result;
     }
 

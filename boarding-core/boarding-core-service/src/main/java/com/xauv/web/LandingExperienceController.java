@@ -1,5 +1,6 @@
 package com.xauv.web;
 
+import com.xauv.exception.AESEncodeException;
 import com.xauv.exception.CrawlerBehaviorException;
 import com.xauv.format.InternalStandardMessageFormat;
 import com.xauv.pojo.vo.LandingExperienceShareVO;
@@ -48,6 +49,9 @@ public class LandingExperienceController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).
                     body(landingExperienceDaoService.queryLandingExperienceByPageWithDirectError());
+        } catch (AESEncodeException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }
