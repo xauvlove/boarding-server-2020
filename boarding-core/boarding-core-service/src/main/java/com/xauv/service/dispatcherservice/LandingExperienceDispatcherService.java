@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 public class LandingExperienceDispatcherService implements DispatcherService{
 
     @Autowired
-    private CheckService LandingExCheckService;
+    private CheckService LandingExpCheckService;
 
     @Override
     public InternalStandardMessageFormat doDispatcher(Object target) {
         ArgsConditions conditions = new ArgsConditions();
         conditions.setNotNullCount(0);
-        return LandingExCheckService.checkArgs(target, conditions);
+        return LandingExpCheckService.checkArgs(target, conditions);
     }
 }

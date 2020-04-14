@@ -59,7 +59,12 @@ public class UniversityDirectionDaoService {
      * @return
      */
     public List<UniversityDirectionVO> getUniversityByConditions(
-            UniversityDirection universityDirection, String loginSession) throws IOException, CrawlerBehaviorException {
+            UniversityDirection universityDirection, String loginSession)
+            throws IOException, CrawlerBehaviorException, IllegalAccessException {
+
+        if(StringUtils.isBlank(universityDirection.getUniversityName())) {
+            throw new IllegalAccessException();
+        }
 
         //鉴定爬虫行为
         String decryptString = DESUtil.getDecryptString(loginSession);

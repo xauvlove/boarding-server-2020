@@ -6,7 +6,9 @@ import com.xauv.exception.CrawlerBehaviorException;
 import com.xauv.pojo.UniversityDirection;
 import com.xauv.pojo.vo.UniversityDirectionVO;
 import com.xauv.service.daoservice.UniversityDirectionDaoService;
+import com.xauv.service.internal.DirectionService;
 import com.xauv.utils.ConditionCheckUtil;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,19 @@ public class UniversityDirectionController {
     private UniversityDirectionDaoService universityDirectionDaoService;
     @Autowired
     private ConditionCheckUtil conditionCheckUtil;
+    @Autowired
+    private DirectionService directionService;
+
+    @GetMapping("/broadDirectionNames")
+    public ResponseEntity<List<String>> getAllFirstDirectionNames() {
+        return ResponseEntity.ok(directionService.getAllFirstDirectionNames());
+    }
+
+    @GetMapping("/involvedDirectionNamesAndCodes")
+    public ResponseEntity<List <String>> getInvolvedDirectionNamesAndCodesByName(
+            @RequestParam("name") String name) {
+        return ResponseEntity.ok(directionService.getSecondDirectionNamesAndCodesByName(name));
+    }
 
     @GetMapping("/list")
     public ResponseEntity<List<UniversityDirectionVO>> getUniversityVoByConditions(

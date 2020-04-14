@@ -2,6 +2,7 @@ com\xauv\service\daoservice\BottomTipService.class
 com\xauv\service\daoservice\UniversityDirectionDaoService.class
 com\xauv\utils\ConditionCheckUtil.class
 com\xauv\web\BottomTipController.class
+com\xauv\service\internal\DirectionService.class
 com\xauv\CoreServiceApplication.class
 com\xauv\web\TestController.class
 com\xauv\service\daoservice\UniversityDaoService.class

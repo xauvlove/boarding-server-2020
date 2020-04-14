@@ -163,6 +163,7 @@ public class LandingExperienceDaoService {
         vo.setContactInfo(landingExp.getContactInfo());
         vo.setMasterType(landingExp.getMasterType());
         vo.setExperience(landingExp.getExperience());
+        vo.setBachelorUniversity(landingExp.getBachelorUniversity());
         return vo;
     }
 
@@ -181,6 +182,7 @@ public class LandingExperienceDaoService {
         String reExamMarkLimit = vo.getReExamMarkLimit();
         String contactInfo = vo.getContactInfo();
         int masterType = vo.getMasterType();
+        String bachelorUniversity = vo.getBachelorUniversity();
         String experience = vo.getExperience();
 
         landingExperience.setUniversityId(universityId);
@@ -196,6 +198,7 @@ public class LandingExperienceDaoService {
         landingExperience.setContactInfo(contactInfo);
         landingExperience.setMasterType(masterType);
         landingExperience.setExperience(experience);
+        landingExperience.setBachelorUniversity(bachelorUniversity);
         landingExperience.setCreated(new Date());
         landingExperience.setUpdated(new Date());
         return landingExperience;

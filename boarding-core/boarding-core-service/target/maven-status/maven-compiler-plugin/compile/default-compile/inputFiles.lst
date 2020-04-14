@@ -24,6 +24,7 @@ D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\mapp
 D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\service\illegal\CrawlerCheckService.java
 D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\mapper\UniversityDetailMapper.java
 D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\service\checkservice\LandingExperienceVOCheckService.java
+D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\service\internal\DirectionService.java
 D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\service\WXLoginService.java
 D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\service\daoservice\BottomTipService.java
 D:\apps\boarding\boarding-core\boarding-core-service\src\main\java\com\xauv\CoreServiceApplication.java
