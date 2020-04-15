@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class LandingExperienceDaoService {
 
-    private static final int DEFAULT_MAX_ROWS = 5;
+    private static final int DEFAULT_MAX_ROWS = 8;
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired

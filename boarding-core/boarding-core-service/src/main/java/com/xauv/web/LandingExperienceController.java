@@ -6,7 +6,6 @@ import com.xauv.format.InternalStandardMessageFormat;
 import com.xauv.pojo.vo.LandingExperienceShareVO;
 import com.xauv.resultful.PageResult;
 import com.xauv.service.daoservice.LandingExperienceDaoService;
-import com.xauv.service.dispatcherservice.LandingExperienceDispatcherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +19,12 @@ public class LandingExperienceController {
     @Autowired
     private LandingExperienceDaoService landingExperienceDaoService;
 
-    @Autowired
-    private LandingExperienceDispatcherService landingExperienceDispatcherService;
 
+    /**
+     * 保存 landing exp
+     * @param landingExperienceShareVO
+     * @return
+     */
     @PostMapping("/landing/experience")
     public ResponseEntity<Void> saveLandingExperience(
             @RequestBody LandingExperienceShareVO landingExperienceShareVO) {
@@ -36,6 +38,14 @@ public class LandingExperienceController {
         }
     }
 
+    /**
+     * 获取 landing exp
+     * 根据 页码，每页获取多少条记录
+     * @param page
+     * @param rows
+     * @param loginSession
+     * @return
+     */
     @GetMapping("/landing/experience")
     public ResponseEntity<PageResult<LandingExperienceShareVO>> getLandingExperiencesByPage(
             @RequestParam("page") Integer page, @RequestParam("rows") Integer rows,

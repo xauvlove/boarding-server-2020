@@ -1,13 +1,13 @@
 package com.xauv.pojo.wx;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class WXLoginCallback implements Serializable {
-
-    private static final long serialVersionUID = -3466647352701667342L;//todo
 
     //最大访问频率
     public static final String ACCESS_FREQUENCY_PREFIX = "ACCESS_FREQUENCY";

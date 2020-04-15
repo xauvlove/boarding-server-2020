@@ -4,9 +4,10 @@ import com.xauv.pojo.BottomTip;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import tk.mybatis.mapper.additional.insert.InsertListMapper;
 import tk.mybatis.mapper.common.Mapper;
 
-public interface BottomTipMapper extends Mapper<BottomTip> {
+public interface BottomTipMapper extends Mapper<BottomTip>, InsertListMapper<BottomTip> {
     @Select("select count(*) from bd_bottom_tip")
     int getRecordCount();
 

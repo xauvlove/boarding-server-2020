@@ -37,6 +37,8 @@ public class LandingExperience {
     private String contactInfo;
     //硕士类型
     private Integer masterType;
+    //本科学校
+    private String bachelorUniversity;
     //考研经验分享
     private String experience;
 

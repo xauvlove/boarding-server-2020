@@ -1,17 +1,16 @@
 package com.xauv.web;
 
+import com.xauv.pojo.BottomTip;
 import com.xauv.pojo.UniversityDirection;
-import com.xauv.service.daoservice.UniversityDetailDaoService;
 import com.xauv.service.daoservice.UniversityDirectionDaoService;
 import com.xauv.service.daoservice.UniversityDaoService;
+import com.xauv.service.internal.BottomTipService;
+import com.xauv.service.internal.UniversityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
+import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
@@ -21,16 +20,26 @@ public class PrivateController {
     @Autowired
     private UniversityDaoService universityDaoService;
 
-    @Autowired
-    private UniversityDetailDaoService universityDetailDaoService;
+    @Resource(name = "internal-universityService")
+    private UniversityService universityService;
 
     @Autowired
     private UniversityDirectionDaoService universityDirectionDaoService;
 
+    @Autowired
+    private BottomTipService bottomTipService;
+
+
+    @PostMapping("/tip/bottom")
+    public ResponseEntity<Void> saveBottomTips(List<BottomTip> bottomTipList) {
+        bottomTipService.saveBottomTips(bottomTipList);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/fullwithuniversitydetail")
     public ResponseEntity<Void> insertAllUniversityDetail() {
         try {
-            universityDetailDaoService.insertAllUniversityDetail();
+            universityService.insertAllUniversityDetail();
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,6 +68,12 @@ public class PrivateController {
         }
     }
 
+    /**
+     * 填充 bd_university_direction 表
+     * 核心方法
+     * 使用6个线程
+     * @return
+     */
     @GetMapping("/fullWithUniversityDirection")
     public ResponseEntity<Void> insertAllUniversityDirection() {
         try {

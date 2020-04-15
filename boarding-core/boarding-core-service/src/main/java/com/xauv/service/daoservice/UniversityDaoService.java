@@ -94,9 +94,6 @@ public class UniversityDaoService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-
         universityList.forEach(
                 universityMapper::insert
         );

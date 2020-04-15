@@ -2,8 +2,10 @@ com\xauv\utils\DESUtil.class
 com\xauv\exception\CrawlerBehaviorException.class
 com\xauv\constants\BoardingConstant.class
 com\xauv\BoardingException.class
+com\xauv\exception\AESEncodeException.class
 com\xauv\format\InternalStandardMessageFormat.class
 com\xauv\utils\TransferTToKUtil.class
 com\xauv\format\InternalStandardMessageEnum.class
 com\xauv\utils\ConditionCheckUtil.class
 com\xauv\resultful\PageResult.class
+com\xauv\utils\AESUtil.class

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+@Service("internal-directionService")
 public class DirectionService {
 
     private final List<FirstSubjectDetail> firstSubjectDetailList = new ArrayList<>();
@@ -19,7 +19,8 @@ public class DirectionService {
     @PostConstruct
     public void fullInDirection() throws IOException {
 
-        InputStream stream = getClass().getClassLoader().getResourceAsStream("private/data/subjectDetail.txt");
+        InputStream stream = getClass().getClassLoader()
+                .getResourceAsStream("private/data/subjectDetail.txt");
 
         /*FileReader fr = new FileReader(
                 Thread.currentThread().getContextClassLoader().getResource("/").getPath()
@@ -49,19 +50,13 @@ public class DirectionService {
     }
 
     public List<String> getAllFirstDirectionNames() {
-        return firstSubjectDetailList.stream().map(FirstSubjectDetail::getName).collect(Collectors.toList());
+        return firstSubjectDetailList.stream().map(FirstSubjectDetail::getName)
+                .collect(Collectors.toList());
     }
 
     public List<String> getSecondDirectionNamesAndCodesByName(String name) {
         FirstSubjectDetail firstSubjectDetail= getFirstSubjectDetailByName(name);
-        /*List<SecondSubjectDetail> secondSubjectDetailList = firstSubjectDetail.getSecondSubjectDetailList();
-        List<Pair<String, String>> secondSubjectDetailNameAndCodeList = Lists.newArrayListWithExpectedSize(secondSubjectDetailList.size());
-        for (SecondSubjectDetail secondSubjectDetail : secondSubjectDetailList) {
-            Pair<String, String> pair = new Pair<>(secondSubjectDetail.getMc(), secondSubjectDetail.getDm());
-            secondSubjectDetailNameAndCodeList.add(pair);
-        }
-        return secondSubjectDetailNameAndCodeList;
-        */
-        return firstSubjectDetail.getSecondSubjectDetailList().stream().map(SecondSubjectDetail::getMc).collect(Collectors.toList());
+        return firstSubjectDetail.getSecondSubjectDetailList().stream().map(
+                SecondSubjectDetail::getMc).collect(Collectors.toList());
     }
 }

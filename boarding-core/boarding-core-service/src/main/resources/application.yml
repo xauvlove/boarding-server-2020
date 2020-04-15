@@ -1,6 +1,10 @@
 spring:
   profiles:
     active: dev
+
+--- # dev 开发环境
+spring:
+  profiles: dev
   application:
     name: core-service
   datasource:
@@ -18,8 +22,6 @@ wx:
     appId: wxc31a46be1015774d
     secret: 9b71e87f6aaa2a86e033032a06c0fbef
     baseUrl: https://api.weixin.qq.com/sns/jscode2session?appid=
-
-
 
 server:
   port: 8077

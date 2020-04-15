@@ -16,5 +16,6 @@ public class LandingExperienceShareVO {
     private String reExamMark;
     private String contactInfo;
     private Integer masterType;
+    private String bachelorUniversity;
     private String experience;
 }

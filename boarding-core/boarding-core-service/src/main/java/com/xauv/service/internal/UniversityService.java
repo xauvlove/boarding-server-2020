@@ -1,13 +1,13 @@
-package com.xauv.service.daoservice;
+package com.xauv.service.internal;
 
 import com.xauv.mapper.UniversityDetailMapper;
 import com.xauv.mapper.UniversityDirectionMapper;
 import com.xauv.pojo.University;
 import com.xauv.pojo.UniversityDetail;
+import com.xauv.service.daoservice.UniversityDaoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -15,18 +15,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-@Service
-public class UniversityDetailDaoService {
+@Service("internal-universityService")
+public class UniversityService {
 
     private static final String basepath = "D:\\apps\\java-develop\\oneonone\\";
 
-    @Autowired
-    private UniversityDirectionMapper universityDirectionMapper;
     @Autowired
     private UniversityDaoService universityDaoService;
     @Autowired
     private UniversityDetailMapper universityDetailMapper;
 
+    @Autowired
+    private UniversityDirectionMapper universityDirectionMapper;
     /**
      * 插入所有的高校详细信息
      * @throws Exception
@@ -82,18 +82,3 @@ public class UniversityDetailDaoService {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
