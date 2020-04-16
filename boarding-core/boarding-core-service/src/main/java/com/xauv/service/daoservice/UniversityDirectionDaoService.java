@@ -63,9 +63,13 @@ public class UniversityDirectionDaoService {
             UniversityDirection universityDirection, String loginSession)
             throws IOException, CrawlerBehaviorException, IllegalAccessException, AESEncodeException {
 
-        if(StringUtils.isBlank(universityDirection.getUniversityName())) {
+        String universityName = universityDirection.getUniversityName();
+        if(StringUtils.isBlank(universityName)) {
             throw new IllegalAccessException();
         }
+        universityName = universityName.replace("（", "(");
+        universityName = universityName.replace("）", ")");
+        universityDirection.setUniversityName(universityName);
 
         //鉴定爬虫行为
         //String decryptString = DESUtil.getDecryptString(loginSession);

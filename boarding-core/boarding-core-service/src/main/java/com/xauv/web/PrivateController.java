@@ -36,7 +36,25 @@ public class PrivateController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/fullwithuniversitydetail")
+    @GetMapping("/updateUniversityAttrs")
+    public ResponseEntity<Void> updateUniversityAttributes() {
+        universityService.updateUniversityAttributes();
+        return ResponseEntity.ok().build();
+    }
+
+    /*@GetMapping("/updatenames")
+    public ResponseEntity<Void> updateUniversityNames() {
+        universityService.updateUniversityNames();
+        return ResponseEntity.ok().build();
+    }*/
+
+    /*@GetMapping("/fullwithuniversityattribute")
+    public ResponseEntity<Void> fullWithUniversityAttributes() throws Exception {
+        universityService.fullWithUniversityAttributes();
+        return ResponseEntity.ok().build();
+    }*/
+
+    /*@GetMapping("/fullwithuniversitydetail")
     public ResponseEntity<Void> insertAllUniversityDetail() {
         try {
             universityService.insertAllUniversityDetail();
@@ -45,9 +63,9 @@ public class PrivateController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-    }
+    }*/
 
-    @GetMapping("/createUniversityDb")
+   /* @GetMapping("/createUniversityDb")
     public ResponseEntity<Void> fullWithUniversityTable() {
         try {
             universityDaoService.fullWithUniversityTable();
@@ -56,9 +74,9 @@ public class PrivateController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-    }
+    }*/
 
-    @GetMapping("/getUniversityCount")
+    /*@GetMapping("/getUniversityCount")
     public ResponseEntity<Integer> testAllUniversitiesWereInserted() {
         try {
             return ResponseEntity.ok(universityDaoService.getAllUniversitiesWereInserted());
@@ -66,7 +84,7 @@ public class PrivateController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-    }
+    }*/
 
     /**
      * 填充 bd_university_direction 表
@@ -74,7 +92,7 @@ public class PrivateController {
      * 使用6个线程
      * @return
      */
-    @GetMapping("/fullWithUniversityDirection")
+    /*@GetMapping("/fullWithUniversityDirection")
     public ResponseEntity<Void> insertAllUniversityDirection() {
         try {
             for (int i = 0; i < 6; i++) {
@@ -88,12 +106,12 @@ public class PrivateController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-    }
+    }*/
 
-    @GetMapping("/university")
+    /*@GetMapping("/university")
     public ResponseEntity<List<UniversityDirection>> getUniversityDirectionById(
             @RequestParam("name") String name, @RequestParam("masterType")Integer masterType,
             @RequestParam("majorDirectionName")String majorDirectionName) {
         return ResponseEntity.ok(universityDirectionDaoService.getUniversityDirectionById(name, masterType, majorDirectionName));
-    }
+    }*/
 }

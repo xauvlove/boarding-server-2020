@@ -13,15 +13,6 @@ public class WXController {
 
     @Autowired
     private WXLoginService wxLoginService;
-    private RedisTemplate redisTemplate;
-
-
-    @GetMapping("/test")
-    public String save() {
-        Integer append = redisTemplate.boundValueOps("hello").append("work");
-        Long hello = redisTemplate.getExpire("hello");
-        return "" + hello ;
-    }
 
     @PostMapping("/login")
     public Map<String, Object> wxLogin(@RequestParam("code") String code) throws AESEncodeException {
